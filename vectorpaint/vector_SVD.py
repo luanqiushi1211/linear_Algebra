@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
+"""
+SVD 分解可视化,描述了矩阵 A 如何通过 SVD 分解,将其分解为三个矩阵 U, Sigma, Vt, 并展示了它们的作用。
+"""
 # --- 1. 数据准备 ---
 # 定义矩阵 A
 A = np.array([[2, 2],
