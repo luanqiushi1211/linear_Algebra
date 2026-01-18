@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 # --- 1. 数据准备 ---
 # 定义矩阵 A
 A = np.array([[2, 2],
-              [-1, 3]])
+              [1, 3]])
 
 # 进行 SVD 分解
 U, S_values, Vt = np.linalg.svd(A)
@@ -30,7 +30,7 @@ def setup_plot(ax, title):
     ax.set_aspect('equal')
     ax.grid(True, linestyle='--', alpha=0.6)
     # 设置统一的视野范围，方便对比
-    limit = 3.5
+    limit = 4
     ax.set_xlim(-limit, limit)
     ax.set_ylim(-limit, limit)
 
@@ -45,6 +45,7 @@ def plot_vectors(ax, vectors, color_e1='r', color_e2='b', label_suffix=""):
               scale=1, scale_units='xy', angles='xy', width=0.015, label=f'Transformed e2 {label_suffix}')
 
 # --- 开始绘图 ---
+# 创建一个2行2列的子图网格，整个图形的尺寸设置为12x12英寸
 fig, axes = plt.subplots(2, 2, figsize=(12, 12))
 plt.subplots_adjust(wspace=0.3, hspace=0.3) # 调整子图间距
 
@@ -52,6 +53,17 @@ plt.subplots_adjust(wspace=0.3, hspace=0.3) # 调整子图间距
 ax1 = axes[0, 0]
 setup_plot(ax1, "1. Final Goal: A applied directly\n(A @ x)")
 # 画原始单位圆 (灰色虚线背景)
+"""- circle[0, :] :
+
+- 这是从名为 circle 的二维数组中提取数据
+- [0, :] 表示选择第0行的所有列
+- : 表示选择该行的所有元素
+- 这通常表示圆的x坐标值
+- circle[1, :] :
+
+- 同样是从 circle 数组中提取数据
+- [1, :] 表示选择第1行的所有列
+- 这通常表示圆的y坐标值"""
 ax1.plot(circle[0, :], circle[1, :], 'k--', alpha=0.3)
 # 计算并画出最终变换后的椭圆
 final_ellipse = A @ circle
@@ -87,7 +99,14 @@ ax3.plot(step1_circle[0, :], step1_circle[1, :], 'k--', alpha=0.3)
 step2_ellipse = Sigma @ step1_circle
 ax3.plot(step2_ellipse[0, :], step2_ellipse[1, :], 'orange', linewidth=2)
 # 追踪基向量变化 (它们被拉长了)
-step2_basis = Sigma @ step1_basis
+"""
+step2_basis = Sigma @ step1_basis 表示追踪原基向量的变换，相当于在原坐标系中继续观察，
+但是代码中现在描述的是在新的坐标系（Vt @ basis）中观察，所以基向量的变换也会相应改变。
+这实际上描述的是AV=U@Sigma@I(I是单位对角阵)，这也说明对于同一个变换，使用不同描述，但是它们张成的空间大小是相同的。
+det(A) = det(U@Sigma V^T) = det({任何基下的矩阵})
+SVD、EVD 和任意基，其实是为了不同目的而选择的特定“观察角度”
+"""
+step2_basis = Sigma @ basis
 plot_vectors(ax3, step2_basis, label_suffix="(stretched)")
 ax3.legend(loc='lower right', fontsize=9)
 
