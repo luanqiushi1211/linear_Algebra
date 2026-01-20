@@ -28,13 +28,23 @@ class SteupGrid:
         ax.set_xlim(-self.limit,self.limit)
         ax.set_ylim(-self.limit,self.limit)
 
-    def plot_matrix(self,ax:plt.Axes,matrix,color='r'):
-        origin = [0,0]
+    def plot_matrix(self,ax:plt.Axes,matrix,color='r',label_suffix=None,origin=None):
+        if origin is None:
+            origin = [0,0]
         if matrix.ndim == 1:
-            ax.quiver(*origin,matrix[0],matrix[1],angles='xy',scale_units='xy',scale=1,color=color)
+            if label_suffix is not None:
+                ax.quiver(*origin,matrix[0],matrix[1],angles='xy',scale_units='xy',scale=1,color=color,label=f'{label_suffix[0]}')
+            else:
+                ax.quiver(*origin,matrix[0],matrix[1],angles='xy',scale_units='xy',scale=1,color=color)
         else:
-            ax.quiver(*origin,matrix[0,0],matrix[0,1],angles='xy',scale_units='xy',scale=1,color=color)
-            ax.quiver(*origin,matrix[1,0],matrix[1,1],angles='xy',scale_units='xy',scale=1,color=color)
+            if label_suffix is not None:
+                ax.quiver(*origin,matrix[0,0],matrix[0,1],angles='xy',scale_units='xy',scale=1,color=color,label=f'{label_suffix[0]}')
+                ax.quiver(*origin,matrix[1,0],matrix[1,1],angles='xy',scale_units='xy',scale=1,color=color,label=f'{label_suffix[1]}')
+            else:
+                ax.quiver(*origin,matrix[0,0],matrix[0,1],angles='xy',scale_units='xy',scale=1,color=color)
+                ax.quiver(*origin,matrix[1,0],matrix[1,1],angles='xy',scale_units='xy',scale=1,color=color)
+        if label_suffix is not None:
+            ax.legend()
 
 
     def steup_grid_line(self,ax:plt.Axes,matrix:np.array,rangeList:list):
@@ -58,11 +68,3 @@ class SteupGrid:
                         color='black', alpha=1, linewidth=0.5)
 
 
-st = SteupGrid(4)
-matrix = np.array([[1,0],[0,1]])
-fig,aex = st.steup_grid(1)
-plt.subplots_adjust(wspace=0.3,hspace=0.3)
-st.steup_plot(aex,'Matrix A')
-st.plot_matrix(aex,matrix)
-st.steup_grid_line(aex,matrix,[-4,4])
-plt.show()
