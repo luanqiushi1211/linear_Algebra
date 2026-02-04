@@ -74,7 +74,7 @@ def plot_3d_surface_from_dict(data_dict):
     # 提取Z值域（最后一个）
     z_values = data_dict[keys[-1]]
     
-    # 创建网格
+    # 创建网格,x横向书写，y纵向书写。
     X, Y = np.meshgrid(x_domain, y_domain)
     
     # 将Z值重塑为与X, Y相同的形状
