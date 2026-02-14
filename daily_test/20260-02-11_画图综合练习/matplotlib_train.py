@@ -89,5 +89,6 @@ def is_positive(matrix:np.array):
 
 if __name__ == "__main__":
     point_set = [(1,2),(2,4),(3,7)]
+    least_squares(point_set)
     matrix = np.array([[1,2],[2,1]])
     is_positive(matrix)
