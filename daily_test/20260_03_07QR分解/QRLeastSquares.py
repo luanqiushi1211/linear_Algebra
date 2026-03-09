@@ -7,6 +7,9 @@ def QRLeastSquares():
     y = sick_matrix @ a_0
     Q,R = np.linalg.qr(sick_matrix)
     a_1 = np.linalg.inv(sick_matrix.T @ sick_matrix)@sick_matrix.T@y
+    """
+    利用QR分解的方法求解最小二乘问题,solve_triangular函数可以求解上三角矩阵的线性方程组
+    """
     a_2 = sl.solve_triangular(R,Q.T@y)
 
     deviation1 = np.linalg.norm(a_1-a_0)
